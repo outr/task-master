@@ -10,7 +10,8 @@ import scribe.{Level, Logger}
 import scala.concurrent.duration._
 
 trait Spec extends AsyncWordSpec with AsyncIOSpec with Matchers {
-  Profig("scheduler.delay").merge("500 milliseconds")
+//  Profig("scheduler.delay").merge("500 milliseconds")
+  Profig("scheduler.delay").merge("500")
 
   Logger("spec").withMinimumLevel(Level.Warn).replace()
 
