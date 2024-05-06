@@ -59,7 +59,7 @@ lazy val core = project
   .in(file("core"))
   .settings(
     libraryDependencies ++= Seq(
-      dep.scribeSLF4J, dep.scribeCats, dep.fabric, dep.rabbitMQ, dep.lightDB,
+      dep.profig, dep.scribeSLF4J, dep.scribeCats, dep.fabric, dep.rabbitMQ, dep.lightDB,
       dep.scalaTest, dep.catsEffectTesting
     )
   )

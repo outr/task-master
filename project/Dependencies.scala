@@ -2,6 +2,7 @@ import sbt.*
 
 object Dependencies {
   object version {
+    val profig: String = "3.4.14"
     val scribe: String = "3.13.4"
     val fabric: String = "1.14.3"
     val rabbitMQ: String = "5.21.0"
@@ -11,6 +12,7 @@ object Dependencies {
     val catsEffectTesting: String = "1.5.0"
   }
 
+  val profig: ModuleID = "com.outr" %% "profig" % version.profig
   val scribeSLF4J: ModuleID = "com.outr" %% "scribe-slf4j" % version.scribe
   val scribeCats: ModuleID = "com.outr" %% "scribe-cats" % version.scribe
   val scribeFile: ModuleID = "com.outr" %% "scribe-file" % version.scribe
