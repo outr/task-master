@@ -12,9 +12,6 @@ import scala.concurrent.duration._
 trait Spec extends AsyncWordSpec with AsyncIOSpec with Matchers {
   Profig("scheduler.delay").merge("500 milliseconds")
 
-  Logger("co.actioniq.scheduler").withMinimumLevel(Level.Warn).replace()
-  Logger("co.actioniq.workflow").withMinimumLevel(Level.Warn).replace()
-  Logger("co.actioniq.task").withMinimumLevel(Level.Warn).replace()
   Logger("spec").withMinimumLevel(Level.Warn).replace()
 
   /**
