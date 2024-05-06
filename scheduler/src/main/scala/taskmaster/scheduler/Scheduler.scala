@@ -10,11 +10,13 @@ import perfolation._
 import profig.Profig
 import scribe.cats.{io => logger}
 import taskmaster.messaging.{ChannelSubscription, MessageQueue, ProcessResult}
-import taskmaster.scheduler.db.{ScheduledEvent, SchedulerDB}
+import taskmaster.scheduler.db.ScheduledEvent
 import taskmaster.task.{TaskId, TaskRegistry}
 
 import java.time.Instant
-import java.util.concurrent.atomic.AtomicBoolean
+import java.util.concurrent.{Executors, ThreadFactory}
+import java.util.concurrent.atomic.{AtomicBoolean, AtomicLong}
+import scala.concurrent.ExecutionContext
 import scala.concurrent.duration.DurationLong
 
 // TODO: Make sure that Scheduler never dies on run
@@ -34,6 +36,30 @@ class Scheduler {
 
   private var subscription: Option[ChannelSubscription] = None
   private var keepAlive = true
+
+  private lazy val executionContext: ExecutionContext = {
+    val threadFactory = new ThreadFactory {
+      private val counter = new AtomicLong(0L)
+
+      override def newThread(r: Runnable): Thread = {
+        val t = new Thread(r)
+        t.setName(s"task-master-${counter.incrementAndGet()}")
+        t.setDaemon(true)
+        t
+      }
+    }
+    val executorService = config.fixedThreadCount match {
+      case Some(threadCount) => Executors.newFixedThreadPool(threadCount, threadFactory)
+      case None => Executors.newCachedThreadPool(threadFactory)
+    }
+    ExecutionContext.fromExecutor(executorService)
+  }
+  private lazy val (scheduler, shutdownScheduler) = IORuntime.createDefaultScheduler("task-master")
+  private implicit lazy val ioRuntime: IORuntime = IORuntime.builder()
+    .setCompute(executionContext, () => ())
+    .setBlocking(executionContext, () => ())
+    .setScheduler(scheduler, shutdownScheduler)
+    .build()
 
   /**
    * Schedules a task to be run in the future
@@ -66,7 +92,7 @@ class Scheduler {
   /**
    * Starts the scheduler monitor to pick up scheduled tasks and fire events for workers to run
    */
-  def start()(implicit runtime: IORuntime): Unit = synchronized {
+  def start(): Unit = synchronized {
     val subscription = channel.subscribe { taskName =>
       for {
         _ <- logger.info(s"ScheduleChanged with addition of $taskName")
