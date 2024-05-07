@@ -22,4 +22,6 @@ object WorkflowDB extends LightDB with HaloDBSupport {
   override def init(truncate: Boolean): IO[Unit] = SchedulerDB.init(truncate).flatMap(_ => super.init(truncate))
 
   override def truncate(): IO[Unit] = SchedulerDB.truncate().flatMap(_ => super.truncate())
+
+  override def dispose(): IO[Unit] = SchedulerDB.dispose().flatMap(_ => super.dispose())
 }

@@ -76,7 +76,7 @@ class Scheduler {
                                       when: Instant,
                                       taskId: TaskId): IO[Unit] = {
     val delay = ((when.toEpochMilli - System.currentTimeMillis()) / 1000.0).f()
-    scribe.info(s"Scheduling $taskName to run in $delay seconds...")
+    scribe.debug(s"Scheduling $taskName to run in $delay seconds...")
     ScheduledEvent.set(ScheduledEvent(
         applicationName = applicationName,
         taskName = taskName,
@@ -95,7 +95,7 @@ class Scheduler {
   def start(): Unit = synchronized {
     val subscription = channel.subscribe { taskName =>
       for {
-        _ <- logger.info(s"ScheduleChanged with addition of $taskName")
+        _ <- logger.debug(s"ScheduleChanged with addition of $taskName")
         _ <- channel.purge()
         _ = changed.set(true)
       } yield {

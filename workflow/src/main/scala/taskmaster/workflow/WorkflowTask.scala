@@ -49,7 +49,7 @@ trait WorkflowTask[Payload <: WorkflowPayload, Result] extends ResultingTask[Pay
       case TaskResult.Success(result, continue) => for {
         workflow <- Workflow(runTask.payload.workflowId)
         _ <- workflow.complete(Task.applicationName, runTask.taskId, result, continue)
-        _ <- logger.info(s"Completion of ${runTask.name}")
+        _ <- logger.debug(s"Completion of ${runTask.name}")
       } yield {
         ()
       }
