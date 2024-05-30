@@ -4,7 +4,7 @@ object Dependencies {
   object version {
     val profig: String = "3.4.14"
     val scribe: String = "3.13.4"
-    val fabric: String = "1.14.4"
+    val fabric: String = "1.14.5"
     val rabbitMQ: String = "5.21.0"
     val lightDB: String = "0.5.0"
 
