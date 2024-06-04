@@ -6,7 +6,7 @@ object Dependencies {
     val scribe: String = "3.13.4"
     val fabric: String = "1.14.4"
     val rabbitMQ: String = "5.21.0"
-    val lightDB: String = "0.5.0"
+    val lightDB: String = "0.9.0"
 
     val scalaTest: String = "3.2.18"
     val catsEffectTesting: String = "1.5.0"
