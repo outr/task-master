@@ -8,7 +8,7 @@ object Dependencies {
     val rabbitMQ: String = "5.21.0"
     val lightDB: String = "0.5.0"
 
-    val scalaTest: String = "3.2.18"
+    val scalaTest: String = "3.2.19"
     val catsEffectTesting: String = "1.5.0"
   }
 
