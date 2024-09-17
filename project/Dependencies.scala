@@ -5,7 +5,7 @@ object Dependencies {
     val profig: String = "3.4.14"
     val scribe: String = "3.13.4"
     val fabric: String = "1.14.4"
-    val rabbitMQ: String = "5.21.0"
+    val rabbitMQ: String = "5.22.0"
     val lightDB: String = "0.5.0"
 
     val scalaTest: String = "3.2.18"
